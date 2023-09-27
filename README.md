@@ -1,0 +1,5 @@
+-> This is a simple project that allows users to register their details. The registered information is stored in a database and can be viewed by users in a datatable. 
+-> Validation is implemented to ensure the accuracy of user details during the registration process. 
+-> It's important to note that this project focuses solely on user registration and does not include a login system. In a future project, I plan to develop a comprehensive registration and login system
+-> If you would like to contribute to this project, please fork the repository and create a new branch for your changes. Then, submit a pull request with a detailed description of your changes and why they're needed.
+-> If you have any questions or feedback about this project, please feel free to contact me at developerdarshan04@gmail.com
