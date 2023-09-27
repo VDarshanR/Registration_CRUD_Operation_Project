@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/fontawesome.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <script src="js/bootstrap.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/myjs.js"></script>
+  <script src="js/bootstrapmin.js"></script>
+  <link rel="stylesheet" href="css/bootstrapmin.css">
+  <link rel="stylesheet" href="datatable/datatable.min.css">
+  <script src="datatable/datatable.min.js"></script>
+  <title>Registration-CRUD Operation</title>
+  <style>
+    .table- bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+      text-align: center !important
+    }
+
+    #btn1:hover {
+      background-color: #5cb85c;
+      color: #212529;
+      font-weight: bold;	
+    }
+
+    .error-message, .error-list {
+      color: #FF0000;
+    }
+  
+    #table {
+      max-height: 418px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    #dataTable thead tr{
+        position: sticky;
+        top: 0px;
+        background-color: #f1f1f1;  
+      }
+
+    .dataTables_length, .dataTables_filter {
+      position: sticky;
+      top: 0px;
+    }
+
+    .input-icon-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon-container i {
+      margin-right: 10px;
+      color: #bd3600;
+    }
+
+    .modal-open .container-fluid, .modal-open  .container {
+      filter:blur(3px);
+    }
+
+    .table-row-hover:hover {
+      background-color: #d9534f;
+      cursor: pointer;
+      color: white;
+      font-weight: lighter;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    #registerClose:hover, #updateClose:hover, #deleteClose:hover {
+      color: #d9534f;
+    }
+
+    #registerClose, #updateClose, #deleteClose {
+      margin-left: 96%; 
+      margin-top: 1%; 
+      font-size: 22px; 
+      cursor: pointer;
+    }
+
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { 
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      appearance: textfield;
+    }
+
+
+  </style>
+</head>
+<body class="bg-dark">
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card mt-0">
+                <div class="card-title ml-5 my-5">
+                  <hr>
+                    <h1 align="center" style="font-family: Verdana, Geneva, Tahoma, sans-serif;"><i><div style="background-color: #7377ad; display: inline; padding: 5px;"><font color="black">Registration - Crud Operation using AJAX, PHP and jQuery</font></div></i></h1><hr><br><br>
+                    <button type="button" id="btn1" class="btn btn-primary" data-toggle="modal" data-backdrop='static' data-keyboard="false" data-target="#Registrationmodal"><i class="fa fa-user-plus"></i> &nbsp; Add New User</button>
+                </div>
+                <div class="card-body">
+                    <div id="table" class="table-container">
+                        <table id="dataTable" class="table-bordered">
+                            <thead>
+                                <tr style="background-color: #f1f1f1; color: #333;">
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Password</th>
+                                    <th>Confirmpassword</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!--Registration Modal-->
+  <div class="modal" id="Registrationmodal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <i class="fa fa-close" id="registerClose"></i>
+        <div class="modal-header">
+          <h3 class="text-dark">Registration Form</h3>
+        </div>
+        <div class="modal-body">
+        <p id="RegisterMessage" class="text-dark"></p>
+          <form>
+            <div class="form-group">
+              <label for="UserName">Name *</label>
+              <div class="input-icon-container">
+                  <i class="fas fa-user-circle"></i>
+                  <input type="text" class="form-control my-2" placeholder="Enter your name" id="UserName">
+              </div>
+            </div>          
+            <div class="form-group">
+              <label for="UserEmail">Email *</label>
+              <div class="input-icon-container">
+                <i class="fa fa-envelope-open"></i>
+                <input type="email" class="form-control my-2" placeholder="Enter your email" id="UserEmail">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="UserPhoneNumber">Phone Number *</label>
+              <div class="input-icon-container">
+                <i class="fa fa-phone"></i>
+                <input type="number" class="form-control my-2" placeholder="Enter your phone number" id="UserPhoneNumber">
+              </div>
+            </div>
+            <div class="form-group">  
+              <label for="UserPassword">Password *</label>
+              <div class="input-icon-container">
+                <i class="fas fa-user-shield"></i>
+                <input type="password" class="form-control my-2" placeholder="Enter your password" id="UserPassword">
+                &nbsp; <i class="fa fa-eye" id="TogglerPassword" style="margin-right: -7px; display: none;"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ConfirmPassword">Confirm Password *</label>
+              <div class="input-icon-container">
+                <i class="fas fa-user-shield"></i>
+                <input type="password" class="form-control my-2" placeholder="Confirm your password" id="ConfirmPassword">
+                &nbsp; <i class="fa fa-eye" id="TogglerConfirmPassword" style="margin-right: -7px; display: none;"></i>            
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">  
+          <button type="button" class="btn btn-success" id="btn_register" onclick="insert_record();">Register</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="registerButtonClose">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+      
+  <!--Update Modal-->
+  <div class="modal" id="Updatemodal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <i class="fa fa-close" id="updateClose" style="margin-left: 96%; margin-top: 1%; font-size: 22px; cursor: pointer;"></i>
+        <div class="modal-header">
+          <h3 class="text-dark">Update Form</h3>
+        </div>
+        <div class="modal-body">
+          <p id="updateConfirmationMessage" class="text-dark">Are you sure you want to update this user details?</p>
+          <p id="updateResultMessage"></p>
+          <form>
+            <input type="hidden" id="hide">
+            <div class="form-group">
+              <label for="UserName">Name *</label>
+              <div class="input-icon-container">
+                  <i class="fas fa-user-circle"></i>
+                  <input type="text" class="form-control my-2" id="name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="UserEmail">Email *</label>
+              <div class="input-icon-container">
+                <i class="fa fa-envelope-open"></i>
+                <input type="email" class="form-control my-2" id="email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="UserPhoneNumber">Phone Number *</label>
+              <div class="input-icon-container">
+                <i class="fa fa-phone"></i>
+                <input type="number" class="form-control my-2" id="number">
+              </div>
+            </div>
+            <div class="form-group">  
+              <label for="UserPassword">Password *</label>
+              <div class="input-icon-container">
+                <i class="fas fa-user-shield"></i>
+                <input type="password" class="form-control my-2" id="password">
+                &nbsp; <i class="fa fa-eye" id="TogglerUpdatePassword" style="margin-right: -7px; "></i> 
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ConfirmPassword">Confirm Password *</label>
+              <div class="input-icon-container">
+                <i class="fas fa-user-shield"></i>
+                <input type="password" class="form-control my-2" id="cpassword">
+                &nbsp; <i class="fa fa-eye" id="TogglerUpdateConfirmPassword" style="margin-right: -7px; "></i>            
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="btn_update" onclick="updateuser() ">Update</button> 
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="updateButtonClose">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+  <!--Delete Modal-->
+  <div class="modal" id="Deletemodal" data-toggle="modal" data-backdrop='static' data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <i class="fa fa-close" id="deleteClose" style="margin-left: 96%; margin-top: 1%; font-size: 22px; cursor: pointer;"></i>
+        <div class="modal-header">    
+          <h3 class="text-dark">Delete Form</h3>
+        </div>
+        <div class="modal-body">
+          <p id="deleteConfirmationMessage">Are you sure you want to delete this user details?</p>
+          <p id="deleteResultMessage"></p>
+          <form>
+            <input type="hidden" id="hide">
+            <div class="form-group">
+              <label for="UserName">Name</label>
+              <div class="input-icon-container">
+                  <i class="fas fa-user-circle"></i>
+                  <input type="text" class="form-control my-2" id="username" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="UserEmail">Email</label>
+              <div class="input-icon-container">
+                <i class="fa fa-envelope-open"></i>
+                <input type="email" class="form-control my-2" id="useremail" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="UserPhoneNumber">Phone Number</label>
+              <div class="input-icon-container">
+                <i class="fa fa-phone"></i>
+                <input type="number" class="form-control my-2" id="userphonenumber" readonly>
+              </div>
+            </div>  
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="btn_update" onclick="deleteuser(); ">Delete</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="deleteButtonClose">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+</body>   
+</html>
